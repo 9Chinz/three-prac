@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Game Penalty</title>
+</head>
+<body>
+    <div class="container">
+        <div class="fifa-logo">
+            <img src="./img/573 x 194.png" alt="">
+        </div>
+        <div class="game-name">
+            <img src="./img/742 x 138.png" alt="">
+        </div>
+        <div class="btn-section">
+            <button class="play-btn" onclick="sendUpdate()">Play</button>
+        </div>
+        <div class="how-text"><a href="#">How to Play</a></div>
+        
+        <div class="football-img"><img src="./img/620 x 292.png" alt=""></div>
+    </div>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <script>
+        const params = new URLSearchParams(window.location.search)
+        const accessToken = params.get('accessToken')
+
+        const sendUpdate = async () => {
+            const response = await fetch('https://penalty-game.com/sendUpdate', {
+              method: 'POST',
+              body: {
+                "accessToken": accessToken,
+                "point": 10
+              }, // string or object
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            });
+            const myJson = await response.json(); //extract JSON from the http response
+            console.log(myJson)
+            // do something with myJson
+        }
+    </script>
+</body>
+</html>
