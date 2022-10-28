@@ -1,0 +1,9 @@
+/.parcel-cache
+
+/node_modules
+
+/src
+
+package-lock.json
+
+package.json
