@@ -11,7 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "cannon-es": "^0.20.0",
+    "cannon-es-debugger": "^1.0.0",
     "dat.gui": "^0.7.9",
+    "howler": "^2.2.3",
+    "js-cookie": "^3.0.1",
     "three": "^0.146.0"
   },
   "devDependencies": {

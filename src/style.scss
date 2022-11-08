@@ -1,38 +1,462 @@
-body {
-  overflow: hidden;
-  margin: 0;
+$main-menu-bg: url("./img/bg/Main-Menu.png");
+$select-char-bg: url("./img/bg/Select-Char.png");
+$game-bg: url("./img/bg/BG-Gaol.jpg");
+@font-face {
+  font-family: "Prompt-Reg";
+  src: url("./Fonts/Prompt-Regular_0.ttf");
+}
+@font-face {
+  font-family: "Prompt-Bold";
+  src: url("./Fonts/Prompt-Bold_0.ttf");
+}
 
-  .container {
-    display: flex;
-    flex-direction: row;
-    position: absolute;
-    top: 70%;
-    left: 50%;
+body {
+  margin: 0;
+  #gameCanvas {
+    background-image: $select-char-bg;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+    position: relative;
+
+    .start-menu {
+      height: 100vh;
+      width: 100%;
+      position: absolute;
+      background-image: $main-menu-bg;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      background-position: center;
+
+      .token-left{
+        display: flex;
+        margin: 2vh 0 0 1rem;
+        img{
+          width: 10%;
+          height: 10%;
+        }
+        p{
+          font-family: 'Prompt-Bold';
+          font-size: 1.5rem;
+          margin: 0.3vh 0 0 0.5rem;
+          text-shadow: 2px 4px #5a0713;
+          color: #ffffff;
+        }
+      }
+
+      .visa-logo {
+        padding-top: 4.5vh;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 65%;
+        img {
+          width: 100%;
+        }
+      }
+
+      .game-logo {
+        margin-top: 2vh;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 90%;
+        img {
+          width: 100%;
+        }
+      }
+
+      .play-btn {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding-top: 5vh;
+        margin-left: auto;
+        margin-right: auto;
+
+        button {
+          font-family: "Prompt-Bold";
+          background-color: rgb(209, 32, 32);
+          color: #ffffff;
+          border-radius: 35px;
+          font-size: 1.2em;
+          padding: 1vh 3rem 1vh 3rem;
+        }
+      }
+
+      .reward-btn {
+        width: fit-content;
+        padding-top: 2vh;
+        margin-left: auto;
+        margin-right: auto;
+
+        button {
+          font-family: "Prompt-Bold";
+          background-color: rgb(209, 32, 32);
+          color: #ffffff;
+          border-radius: 35px;
+          font-size: 1.2em;
+          padding: 1vh 1rem 1vh 1rem;
+        }
+      }
+
+      .banner-lower{
+        padding-top: 4.5vh;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 90%;
+        img {
+          width: 100%;
+        }
+      }
+
+      .football {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 2.5vh;
+        max-width: 70%;
+        img {
+          width: 100%;
+        }
+      }
+    }
+
+    .loading-menu {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      background-image: $main-menu-bg;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      background-position: center;
+      width: 100%;
+      height: 100vh;
+      margin: 0 auto;
+      .fifa-logo {
+        position: relative;
+        max-width: 90%;
+        img {
+          width: 100%;
+        }
+      }
+    }
+
+    .select-char-menu {
+      width: 100%;
+      background-image: $select-char-bg;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      background-position: center;
+      object-fit: cover;
+
+      .player-head {
+        padding-top: 2vh;
+        text-align: center;
+        width: 100%;
+        position: absolute;
+        font-family: "Prompt-Bold";
+        color: white;
+      }
+
+      .btn-row-txt{
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        top: 58vh;
+        font-family: "Prompt-Bold";
+        font-size: 1.5rem;
+        color: #ffffff;
+        text-shadow: 2px 4px #5a0713;
+      }
+
+      .button-char {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        position: absolute;
+        top: 68%;
+        width: 100%;
+        gap: 1vh;
+
+        .btn-row {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          column-gap: 2vh;
+
+          button {
+            font-family: "Prompt-Bold";
+            clip-path: polygon(15% 0, 100% 0%, 85% 100%, 0% 100%);
+            border-radius: 0 0.8rem 0 0.8rem;
+            padding: 1vh 1rem 1vh 1rem;
+          }
+
+          button#load_argen {
+            background-color: #6d1f49;
+            color: #ffffff;
+          }
+
+          button#load_belgium {
+            background-color: #c01633;
+            color: #ffffff;
+          }
+
+          button#load_brazil {
+            background-color: #7aa9d7;
+            color: #ffffff;
+          }
+
+          button#load_england {
+            background-color: #001789;
+            color: #ffffff;
+          }
+
+          button#load_france {
+            background-color: #f48f1c;
+            color: #ffffff;
+          }
+
+          button#load_portugal {
+            background-color: #991a25;
+            color: #ffffff;
+          }
+
+          button#load_qatar {
+            background-color: #2f9847;
+            color: #ffffff;
+          }
+
+          button#load_spain {
+            background-color: #016933;
+            color: #ffffff;
+          }
+        }
+      }
+
+      .main-game-btn {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        position: absolute;
+        top: 87%;
+
+        button {
+          font-family: "Prompt-Bold";
+          font-size: 1.2rem;
+          padding: 1vh 2rem 1vh 2rem;
+          background-color: red;
+          color: white;
+          border-radius: 25px;
+        }
+      }
+    }
+
+    .game-interface {
+      position: absolute;
+
+      .goal-show{
+        position: fixed;
+        margin-top: 55vh;
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+        .goalWord{
+          width: 90%;
+        }
+        .goalBg{
+          margin-top: 2vh;
+          width: 40%;
+        }
+        p{
+          position: absolute;
+          margin: 8vh 0 0 0;
+          font-family: 'Prompt-Bold';
+          font-size: 3rem;
+          color: #ffffff;
+          font-style: italic;
+        }
+      }
+
+      .swipe-top-play{
+        height: 30vh;
+        width: 100%;
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        top: 64vh;
+        animation: swipeBlink 1.1s linear infinite;
+        img{
+          height: 60%;
+          width: 60%;
+        }
+      }
+      @keyframes swipeBlink {
+        0%{
+          opacity: 0;
+        }
+        50%{
+          opacity: 5;
+        }
+        100%{
+          opacity: 1;
+        }
+      }
+
+      .ui-container{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        position: fixed;
+        top: 90vh;
+
+        .football-left{
+          width: 80%;
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+          column-gap: 0.5rem;
+          .football-display{
+            img{
+              margin: 0 auto;
+              width: 100%;
+            }
+          }
+        }
+
+        .football-empty{
+          position: fixed;
+          z-index: -99;
+          width: 80%;
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+          column-gap: 0.5rem;
+          .football-empty-display{
+            .dot{
+              height: 6.3vh;
+              width: 3.3rem;
+              background-color: #dbdbdb;
+              border-radius: 50%;
+              display: inline-block;
+              box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            }
+          }
+        }
+
+      }
+
+
+      // .ui-container{
+      //   display: flex;
+      //   justify-content: center;
+      //   position: absolute;
+      //   top: 34vh;
+      //   margin: 0 0 0 0;
+      //   display: flex;
+      //   width: 100%;
+
+      //   .football-left{
+      //     img{
+      //       width: 3.5rem;
+      //     }
+      //   }
+      // }
+
+    }
+
+    .final-score-ui {
+      // background-image: $game-bg;
+      // background-repeat: no-repeat;
+      // background-size: 100% 100%;
+      // background-position: center;
+
+      width: 100%;
+      position: absolute;
+      flex-direction: column;
+
+      .token-left{
+        padding-top: 3vh;
+        display: flex;
+        margin: 0 0 0 1rem;
+        width: 8%;
+        img {
+          width: 100%;
+        }
+
+        p{
+          font-family: "Prompt-Bold";
+          margin: 0 0 0 ;
+          position: absolute;
+          top: 2.8vh;
+          left: 3.5rem;
+          font-size: 1.5rem;
+          text-shadow: 2px 4px #5a0713;
+          color: #ffffff;
+        }
+      }
+
+      .score-word {
+        height: 10vh;
+        margin: 10vh auto 0 auto;
+        display: flex;
+        justify-content: center;
+        width: 70%;
+        img{
+          width: 100%;
+        }
+      }
+
+      .final-score{
+        padding-top: 3vh;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        width: 80%;
+        img {
+          width: 100%;
+        }
+
+        p{
+          font-family: "Prompt-Bold";
+          font-style: italic;
+          margin: 0;
+          top: 28vh;
+          position: absolute;
+          font-size: 5rem;
+          color: #ffffff;
+        }
+      }
+
+      .play-again-btn {
+        display: flex;
+        justify-content: center;
+        padding-top: 8vh;
+        button {
+          font-family: "Prompt-Bold";
+          background-color: rgb(209, 32, 32);
+          color: #ffffff;
+          border-radius: 35px;
+          font-size: 1.2rem;
+          padding: 1vh 1.2rem 1vh 1.2rem;
+        }
+      }
+
+      .check-reward{
+        display: flex;
+        justify-content: center;
+        padding-top: 3vh;
+        button {
+          font-family: "Prompt-Bold";
+          background-color: rgb(209, 32, 32);
+          color: #ffffff;
+          border-radius: 35px;
+          font-size: 1.2rem;
+          padding: 1vh 2rem 1vh 2rem;
+        }
+      }
+
+    }
 
   }
-
-  // .progress-bar-container {
-  //   position: absolute;
-  //   left: 50%;
-  //   top: 50%;
-  //   transform: translate(-50%, -50%);
-  //   width: 100%;
-  //   height: 100%;
-  //   background-color: rgba(0, 0, 0, 0.8);
-  //   display: flex;
-  //   flex-direction: column;
-  //   justify-content: center;
-  //   align-items: center;
-
-  //   #progress-bar {
-  //       width: 30%;
-  //       margin-top: 0.5%;
-  //       height: 2%;
-  //   }
-
-  //   label {
-  //       color: white;
-  //       font-size: 2rem;
-  //   }
-  // }
 }
