@@ -818,7 +818,7 @@ playAgain.addEventListener('click', () => {
 })
 
 const sendUpdate = async () => {
-    const res = await fetch("https://penalty-game.com/sendUpdate", {
+    const res = await fetch(`https://${window.location.host}/sendUpdate`, {
         method: "POST",
         body: JSON.stringify({
             accessToken: accessToken,
