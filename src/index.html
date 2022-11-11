@@ -5,12 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.scss" />
+    <link
+      rel="stylesheet"
+      href="../node_modules/@splidejs/splide/dist/css/splide.min.css"
+    />
     <title>Penalty-game</title>
   </head>
   <body>
     <div id="gameCanvas">
-
       <div class="select-char-menu" style="display: none">
+        <div class="i-icon">
+          <img id="i-tutorial" src="./img/i_icon.png" alt="" />
+        </div>
         <div class="player-head">
           <h1>PLAYER</h1>
         </div>
@@ -38,9 +44,9 @@
         </div>
       </div>
 
-      <div class="start-menu" >
+      <div class="start-menu">
         <div class="token-left">
-          <img src="./img/rewardMenu/147x147.png" alt="">
+          <img src="./img/rewardMenu/147x147.png" alt="" />
           <p id="token_begin">x0</p>
         </div>
         <div class="visa-logo">
@@ -53,10 +59,10 @@
           <button id="go_select_char">Play</button>
         </div>
         <div class="reward-btn">
-          <button id="show_reward">How to play</button>
+          <button id="show_how_to_play">How to play</button>
         </div>
         <div class="banner-lower">
-          <img src="./img/mainMenu/Main-menu-lower.png" alt="">
+          <img src="./img/mainMenu/Main-menu-lower.png" alt="" />
         </div>
         <div class="football">
           <img src="./img/mainMenu/football-dropshadow.png" alt="football" />
@@ -69,58 +75,87 @@
         </div>
       </div>
 
-      <div class="game-interface" style="display: none">
-        <div class="swipe-top-play">
-          <img src="./img/game/swipe-img.png" alt="">
+      <div class="tutorial-page" style="display: none">
+        <div class="header-img">
+          <img src="./img/tutorialMenu/tutorial-title.png" alt="" />
         </div>
-        <div class="goal-show" style="display: none;">
-          <img class="goalWord" src="./img/game/goalWord.png" alt="">
+        <div id="skip-tutorial-btn" class="skip-tutorial">
+          <img src="./img/tutorialMenu/exitBtn.png" alt="">
+        </div>
+        <section class="splide" aria-label="splide-tutorial-list">
+          <div class="splide__track">
+            <ul class="splide__list">
+              <li class="splide__slide">
+                <img src="./img/tutorialMenu/page-1.png" alt="" />
+              </li>
+              <li class="splide__slide">
+                <img src="./img/tutorialMenu/page-2.png" alt="" />
+              </li>
+              <li class="splide__slide">
+                <img src="./img/tutorialMenu/page-3.png" alt="" />
+              </li>
+            </ul>
+          </div>
+        </section>
+
+      </div>
+
+      <div class="game-interface"  style="display: none">
+        <div class="swipe-top-play">
+          <img src="./img/game/swipe-img.png" alt="" />
+        </div>
+        <div class="goal-show" style="display: none">
+          <img class="goalWord" src="./img/game/goalWord.png" alt="" />
           <img class="goalBg" src="./img/rewardMenu/bg-score.png" alt="" />
           <p id="score_diplay_round">0</p>
         </div>
-        <div class="ui-container">
+        <div class="ui-container" >
           <div class="football-left">
             <div class="football-display">
-              <img src="./img/FootBall.png" alt="">
+              <img src="./img/FootBall.png" alt="" />
             </div>
             <div class="football-display">
-              <img src="./img/FootBall.png" alt="">
+              <img src="./img/FootBall.png" alt="" />
             </div>
             <div class="football-display">
-              <img src="./img/FootBall.png" alt="">
+              <img src="./img/FootBall.png" alt="" />
             </div>
             <div class="football-display">
-              <img src="./img/FootBall.png" alt="">
+              <img src="./img/FootBall.png" alt="" />
             </div>
             <div class="football-display">
-              <img src="./img/FootBall.png" alt="">
+              <img src="./img/FootBall.png" alt="" />
             </div>
           </div>
-
+        </div>
+        <div class="ui-empty">
           <div class="football-empty">
-            <div class="football-empty-display">
-              <span class="dot"></span>
+            <div class="circle-display">
+              <img src="./img/game/empty-ball.png" alt="">
             </div>
-            <div class="football-empty-display">
-              <span class="dot"></span>
+            <div class="circle-display">
+              <img src="./img/game/empty-ball.png" alt="">
             </div>
-            <div class="football-empty-display">
-              <span class="dot"></span>
+            <div class="circle-display">
+              <img src="./img/game/empty-ball.png" alt="">
             </div>
-            <div class="football-empty-display">
-              <span class="dot"></span>
+            <div class="circle-display">
+              <img src="./img/game/empty-ball.png" alt="">
             </div>
-            <div class="football-empty-display">
-              <span class="dot"></span>
+            <div class="circle-display">
+              <img src="./img/game/empty-ball.png" alt="">
             </div>
           </div>
+        </div>
+        <div class="score-display-lower">
+          <span>Score </span><span id="score_ui_lower">0</span>
         </div>
 
       </div>
 
       <div class="final-score-ui" style="display: none">
         <div class="token-left">
-          <img src="./img/rewardMenu/147x147.png" alt="">
+          <img src="./img/rewardMenu/147x147.png" alt="" />
           <p id="token_display">x0</p>
         </div>
         <div class="score-word">

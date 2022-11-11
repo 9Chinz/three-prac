@@ -36,6 +36,9 @@ const btnPortugal = document.getElementById('load_portugal')
 const btnQatar = document.getElementById('load_qatar')
 const btnSpain = document.getElementById('load_spain')
 
+const tutorialPage = document.querySelector('.tutorial-page')
+
+const skipBtn = document.getElementById('skip-tutorial-btn')
 const goSelectChar = document.getElementById('go_select_char')
 const loadingMenu = document.querySelector('.loading-menu')
 const selectCharMenu = document.querySelector('.select-char-menu')
@@ -51,6 +54,7 @@ const accessToken = params.get("accessToken")
 
 const scorePerRound = document.getElementById('score_diplay_round')
 const goalBoard = document.querySelector('.goal-show')
+const scoreUiLower = document.getElementById('score_ui_lower')
 
 const bgGame = new URL('./img/bg/BG-Gaol.jpg', import.meta.url)
 
@@ -71,8 +75,6 @@ let winSound = new Howl({
 })
 
 let el
-
-let isFirstPlay = (Cookies.get('isPlay') == undefined) ? true : false
 
 let scene, renderer, camera
 let stats, controls, axesHelp, cannonDebug
@@ -357,6 +359,7 @@ function initPhysics() {
         winSound.play()
 
         shootSuccess += 1
+        scoreUiLower.innerHTML = shootSuccess
         scorePerRound.innerHTML = shootSuccess
         goalBoard.setAttribute('style', 'display:flex')
     })
@@ -664,7 +667,7 @@ async function renderGame() {
             el.setAttribute('style', 'display:flex')
             goalBoard.setAttribute('style', 'display:none')
             isShoot = false
-            footballLeftSection.removeChild(footballLeftSection.children[totalBall-1])
+            footballLeftSection.removeChild(footballLeftSection.children[totalBall - 1])
             totalBall -= 1
             gameRound += 1
             physicsWorld.removeBody(goalCurrenBlock)
@@ -711,19 +714,81 @@ async function renderGame() {
     // stats.update()
     requestAnimationFrame(renderGame)
 }
+
+import Splide from '@splidejs/splide'
+const splide = new Splide('.splide', {
+    focus: 'center',
+    width: '100vw',
+    height: '73vh',
+    gap: '10vw',
+    padding: '8vw',
+    start: 0
+})
+
 // control menu
-goSelectChar.addEventListener('click', () => {
-    if(isFirstPlay){
-        console.log("first time hrr")
-        Cookies.set('isPlay', 'true')
-    }
-    if(!bgMusicPlayed){
-        bgMusic.play()
-        bgMusicPlayed = true
-    }
+function goToSelectPage() {
     loadingMenu.setAttribute('style', 'display:flex;')
     startMenu.setAttribute('style', 'display:none;')
     start()
+}
+
+let isPressPlay = false
+goSelectChar.addEventListener('click', () => {
+    const isFirstPlay = (Cookies.get('isPlay') == undefined) ? true : false
+    if (isFirstPlay) {
+        Cookies.set('isPlay', 'true')
+        isPressPlay = true
+        console.log("first time hrr")
+        startMenu.setAttribute('style', 'display:none')
+        showTutorial()
+    } else {
+        goToSelectPage()
+    }
+    if (!bgMusicPlayed) {
+        bgMusic.play()
+        bgMusicPlayed = true
+    }
+
+})
+
+function showTutorial() {
+    splide.mount()
+    tutorialPage.setAttribute('style', 'display:flex;')
+}
+
+let beforePage = 'startMenu'
+const howToPlayBtn = document.getElementById('show_how_to_play')
+const iTutotialBtn = document.getElementById('i-tutorial')
+
+howToPlayBtn.addEventListener('click', () => {
+    startMenu.setAttribute('style', 'display:none')
+    showTutorial()
+})
+
+iTutotialBtn.addEventListener('click', () => {
+    console.log('clikc')
+    selectCharMenu.setAttribute('style', 'display:none')
+    pageName['selectCharPage'].setAttribute('style', 'display:none')
+    showTutorial()
+    beforePage = 'selectMenu'
+})
+
+skipBtn.addEventListener('click', async () => {
+    splide.destroy()
+
+    if (beforePage == 'startMenu') {
+        if (isPressPlay) {
+            goToSelectPage()
+        } else {
+            startMenu.setAttribute('style', 'display:block')
+        }
+    }else if (beforePage == 'selectMenu'){
+        await renderer.dispose()
+        await document.getElementById('gameCanvas').removeChild(pageName['selectCharPage'])
+        start()
+        selectCharMenu.setAttribute('style', 'display:block')
+    }
+    tutorialPage.setAttribute('style', 'display:none;')
 })
 
 goMainGame.addEventListener('click', () => {
@@ -737,7 +802,7 @@ goMainGame.addEventListener('click', () => {
 })
 
 playAgain.addEventListener('click', () => {
-    for (let i = 0; i < 5; i++){
+    for (let i = 0; i < 5; i++) {
         const fbDisplayDiv = document.createElement('div')
         const imgFbDisplay = document.createElement('img')
         imgFbDisplay.src = new URL('./img/FootBall.png', import.meta.url).href
@@ -745,6 +810,7 @@ playAgain.addEventListener('click', () => {
         fbDisplayDiv.appendChild(imgFbDisplay)
         footballLeftSection.appendChild(fbDisplayDiv)
     }
+    scoreUiLower.innerHTML = 0
     totalBall = 5
     isShoot = false
     lockShoot = false
@@ -764,9 +830,9 @@ const sendUpdate = async () => {
     return res.json()
 };
 
-window.onload = () => {    
-    startMenu.addEventListener('touchend', ()=>{
-        if(!bgMusicPlayed){
+window.onload = () => {
+    startMenu.addEventListener('touchend', () => {
+        if (!bgMusicPlayed) {
             bgMusic.play()
             bgMusicPlayed = true
         }
