@@ -757,6 +757,12 @@ const splide = new Splide('.splide', {
     start: 0
 })
 
+async function delayPressBtn(delayTime=60){
+    return new Promise((res, rej)=>{
+        setTimeout(()=>{res()}, delayTime)
+    })
+}
+
 // control menu
 function goToSelectPage() {
     loadingMenu.setAttribute('style', 'display:flex;')
@@ -766,7 +772,8 @@ function goToSelectPage() {
 }
 
 let isPressPlay = false
-goSelectChar.addEventListener('click', () => {
+goSelectChar.addEventListener('click', async () => {
+    await delayPressBtn()
     const isFirstPlay = (Cookies.get('isPlay') == undefined) ? true : false
     if (isFirstPlay) {
         Cookies.set('isPlay', 'true', { expires: 730 })
@@ -792,20 +799,23 @@ let beforePage = 'startMenu'
 const howToPlayBtn = document.getElementById('show_how_to_play')
 const iTutotialBtn = document.getElementById('i-tutorial')
 
-howToPlayBtn.addEventListener('click', () => {
+howToPlayBtn.addEventListener('click', async () => {
+    await delayPressBtn()
     startMenu.setAttribute('style', 'display:none')
     showTutorial()
 })
 
-iTutotialBtn.addEventListener('click', () => {
+iTutotialBtn.addEventListener('click', async () => {
+    await delayPressBtn()
     selectCharMenu.setAttribute('style', 'display:none')
     pageName['selectCharPage'].setAttribute('style', 'display:none')
     showTutorial()
     beforePage = 'selectMenu'
 })
-skipBtn.addEventListener('click', async () => {
-    splide.destroy()
 
+skipBtn.addEventListener('click', async () => {
+    await delayPressBtn()
+    splide.destroy()
     if (beforePage == 'startMenu') {
         if (isPressPlay) {
             goToSelectPage()
@@ -820,7 +830,8 @@ skipBtn.addEventListener('click', async () => {
     tutorialPage.setAttribute('style', 'display:none;')
 })
 
-goMainGame.addEventListener('click', () => {
+goMainGame.addEventListener('click', async () => {
+    await delayPressBtn()
     loadingGame.setAttribute('style', 'display:flex;')
     currentShow = undefined
     canvasTag.style.backgroundImage = `url(${bgGame.href})`
@@ -830,7 +841,8 @@ goMainGame.addEventListener('click', () => {
     startGame()
 })
 
-playAgain.addEventListener('click', () => {
+playAgain.addEventListener('click', async () => {
+    await delayPressBtn()
     for (let i = 0; i < 5; i++) {
         const fbDisplayDiv = document.createElement('div')
         const imgFbDisplay = document.createElement('img')
@@ -864,7 +876,7 @@ const sendUpdate = async () => {
 };
 
 window.onload = () => {
-    window.scrollTo(0, 1);
+    window.scrollTo(0, 10);
     startMenu.addEventListener('touchend', () => {
         if (!bgMusicPlayed) {
             bgMusic.play()
@@ -883,6 +895,7 @@ function parseJwt(token) {
     return JSON.parse(jsonPayload);
 }
 
-goToRewardBtn.addEventListener('click', () => {
+goToRewardBtn.addEventListener('click', async () => {
+    await delayPressBtn()
     window.open("mcard://mgame/rewards", "_self")
 })
