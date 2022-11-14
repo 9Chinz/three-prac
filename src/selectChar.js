@@ -41,6 +41,7 @@ const tutorialPage = document.querySelector('.tutorial-page')
 const skipBtn = document.getElementById('skip-tutorial-btn')
 const goSelectChar = document.getElementById('go_select_char')
 const loadingMenu = document.querySelector('.loading-menu')
+const loadingGame = document.querySelector('.loading-game')
 const selectCharMenu = document.querySelector('.select-char-menu')
 const startMenu = document.querySelector('.start-menu')
 const goMainGame = document.getElementById('go_main_game')
@@ -57,6 +58,7 @@ const goalBoard = document.querySelector('.goal-show')
 const scoreUiLower = document.getElementById('score_ui_lower')
 
 const bgGame = new URL('./img/bg/BG-Gaol.jpg', import.meta.url)
+const bgSelectChar = new URL('./img/bg/Select-Char.png', import.meta.url)
 
 let bgMusic = new Howl({
     src: [new URL('./sounds/bg-music.mp3', import.meta.url).href], html5: true, usingWebAudio: false, html5: true, mute: false, loop: true, webAudio: false, volume: 0.3
@@ -73,6 +75,8 @@ let pressBtnSound = new Howl({
 let winSound = new Howl({
     src: [new URL('./sounds/winSound.mp3', import.meta.url).href], html5: true, usingWebAudio: false, html5: true, mute: false, loop: false, webAudio: false, volume: 0.5
 })
+
+const canvasTag = document.getElementById('gameCanvas')
 
 let el
 
@@ -105,6 +109,8 @@ let shootTime
 let gameRound = 0
 let shootSuccess = 0
 let totalBall = 5
+let shootGoal = false
+let shootDirection = ''
 let footballLeftSection = document.querySelector('.football-left')
 
 let lockShoot = false
@@ -122,6 +128,12 @@ loadingManage.onLoad = () => {
     loadingMenu.setAttribute('style', 'display:none;')
     selectCharMenu.setAttribute('style', 'display:block')
     isLoaded = true
+}
+
+const loadingGameManage = new THREE.LoadingManager()
+
+loadingGameManage.onLoad = () => {
+    loadingGame.setAttribute('style', 'display:none;')
 }
 
 function start() {
@@ -146,7 +158,6 @@ function start() {
         1000
     )
     camera.position.set(0, 3, 5)
-
 
     // Stats.js
     // stats = new Stats()
@@ -180,8 +191,8 @@ function start() {
 
 function windowResize() {
     camera.aspect = window.innerWidth / window.innerHeight
-    camera.updateProjectionMatrix()
     renderer.setSize(window.innerWidth, window.innerHeight)
+    camera.updateProjectionMatrix()
 }
 
 function initObject() {
@@ -342,6 +353,7 @@ function initPhysics() {
     groundBody.position.set(0, 40, -50)
     groundBody.addEventListener('collide', () => {
         failSound.play()
+        shootGoal = false
     })
     physicsWorld.addBody(groundBody)
 
@@ -360,6 +372,7 @@ function initPhysics() {
     physicsWorld.addBody(goalBody)
     goalBody.addEventListener('collide', () => {
         winSound.play()
+        shootGoal = true
 
         shootSuccess += 1
         scoreUiLower.innerHTML = shootSuccess
@@ -371,6 +384,7 @@ function initPhysics() {
         shape: new CANNON.Box(new CANNON.Vec3(3, 3, 2))
     })
     goalCurrenBlock.addEventListener('collide', () => {
+        shootGoal = false
         failSound.play()
     })
     goalCurrenBlock.position.set(0, 14, -38)
@@ -388,7 +402,7 @@ function initPhysics() {
 
 function initGameObj() {
 
-    const txLoader = new THREE.TextureLoader()
+    const txLoader = new THREE.TextureLoader(loadingGameManage)
 
     const footballUrl = new URL('./img/Soccer Skin.png', import.meta.url)
     txLoader.load(footballUrl.href, (txt) => {
@@ -402,7 +416,7 @@ function initGameObj() {
 
 
     const GoalUrl = new URL('./assets/GoalKeeper_v2.glb', import.meta.url)
-    assetLoader = new GLTFLoader()
+    assetLoader = new GLTFLoader(loadingGameManage)
     assetLoader.load(GoalUrl.href, (gltf) => {
         goalKeeperThree = gltf.scene
         const goalScale = 7
@@ -455,6 +469,7 @@ function initGameControl() {
 
     swipedetect(el, function (swipedir) {
         if (!isShoot && !lockShoot) {
+            shootDirection = swipedir
             switch (swipedir) {
                 case "fastTop":
                     el.setAttribute('style', 'display:none;')
@@ -585,6 +600,7 @@ function initGameControl() {
 }
 
 function playHardKick() {
+    footballLeftSection.removeChild(footballLeftSection.children[totalBall - 1])
     playerThree.visible = true
     playerAnimations['HardKick'].play()
     playerAnimations['HardKick'].reset()
@@ -632,13 +648,34 @@ function initDebugTool() {
     cannonDebug = new CannonDebugger(scene, physicsWorld)
 }
 
+function resetRound() {
+    el.setAttribute('style', 'display:flex')
+    goalBoard.setAttribute('style', 'display:none')
+    isShoot = false
+    shootGoal = false
+    totalBall -= 1
+    gameRound += 1
+    physicsWorld.removeBody(goalCurrenBlock)
+
+    sphrBody.position.set(0, 2, 15)
+    sphrBody.quaternion.setFromEuler(0, Math.PI - 0.4, 0)
+    sphrBody.interpolatedPosition.setZero();
+    sphrBody.initPosition.setZero();
+
+    sphrBody.velocity.setZero();
+    sphrBody.initVelocity.setZero();
+    sphrBody.angularVelocity.setZero();
+    sphrBody.initAngularVelocity.setZero();
+}
+
 async function renderGame() {
     // event key
     if (gameRound >= 5) {
         isShoot = false
         lockShoot = true
+
+        loadingGame.setAttribute('style', 'display:flex;')
         const jsonResData = await sendUpdate()
-        console.log(jsonResData)
         if (jsonResData.configuration['credit'] <= 0) {
             document.querySelector('.play-again-btn').setAttribute('style', 'display: none;')
             tokenLeft.innerHTML = `x${jsonResData.configuration['credit']}`
@@ -646,6 +683,7 @@ async function renderGame() {
             newRef = jsonResData.reference
             tokenLeft.innerHTML = `x${jsonResData.configuration['credit']}`
         }
+        loadingGame.setAttribute('style', 'display:none;')
 
         scoreDisplayBoard.innerHTML = shootSuccess
         gameRound = 0
@@ -654,24 +692,18 @@ async function renderGame() {
     }
 
     if (isShoot) {
-        if (new Date().getTime() - shootTime >= 3000) {
-            el.setAttribute('style', 'display:flex')
-            goalBoard.setAttribute('style', 'display:none')
-            isShoot = false
-            footballLeftSection.removeChild(footballLeftSection.children[totalBall - 1])
-            totalBall -= 1
-            gameRound += 1
-            physicsWorld.removeBody(goalCurrenBlock)
-
-            sphrBody.position.set(0, 2, 15)
-            sphrBody.quaternion.setFromEuler(0, Math.PI - 0.4, 0)
-            sphrBody.interpolatedPosition.setZero();
-            sphrBody.initPosition.setZero();
-
-            sphrBody.velocity.setZero();
-            sphrBody.initVelocity.setZero();
-            sphrBody.angularVelocity.setZero();
-            sphrBody.initAngularVelocity.setZero();
+        // shoot delay condition
+        const nowTime = new Date().getTime()
+        if (nowTime - shootTime >= 3000 && !shootGoal) {
+            resetRound()
+        } else if (nowTime - shootTime >= 3100 && shootGoal && shootDirection == 'fastTop') {
+            resetRound()
+        } else if (nowTime - shootTime >= 3200 && shootGoal && (shootDirection == 'fastRight' || shootDirection == 'fastLeft')) {
+            resetRound()
+        } else if (nowTime - shootTime >= 3500 && shootGoal && (shootDirection == 'slowRight' || shootDirection == 'slowLeft')) {
+            resetRound()
+        } else if (nowTime - shootTime >= 3500) {
+            resetRound()
         }
     }
 
@@ -721,13 +753,14 @@ function goToSelectPage() {
     loadingMenu.setAttribute('style', 'display:flex;')
     startMenu.setAttribute('style', 'display:none;')
     start()
+    canvasTag.style.backgroundImage = `url(${bgSelectChar.href})`
 }
 
 let isPressPlay = false
 goSelectChar.addEventListener('click', () => {
     const isFirstPlay = (Cookies.get('isPlay') == undefined) ? true : false
     if (isFirstPlay) {
-        Cookies.set('isPlay', 'true', {expires: 730})
+        Cookies.set('isPlay', 'true', { expires: 730 })
         isPressPlay = true
         startMenu.setAttribute('style', 'display:none')
         showTutorial()
@@ -761,7 +794,6 @@ iTutotialBtn.addEventListener('click', () => {
     showTutorial()
     beforePage = 'selectMenu'
 })
-
 skipBtn.addEventListener('click', async () => {
     splide.destroy()
 
@@ -772,25 +804,21 @@ skipBtn.addEventListener('click', async () => {
             startMenu.setAttribute('style', 'display:block')
         }
     } else if (beforePage == 'selectMenu') {
-        selectCharMenu.setAttribute('style', 'display:block')
+        selectCharMenu.setAttribute('style', 'display:block;')
         await renderer.dispose()
-        await document.getElementById('gameCanvas').removeChild(pageName['selectCharPage'])
-        isLoaded = false
-        start()
+        pageName['selectCharPage'].setAttribute('style', `display:block; height: ${window.innerHeight}px; width: ${window.innerWidth}px; touch-action: none;`)
     }
     tutorialPage.setAttribute('style', 'display:none;')
 })
 
 goMainGame.addEventListener('click', () => {
-    if (isLoaded) {
-        currentShow = undefined
-        const canvas = document.getElementById('gameCanvas')
-        canvas.style.backgroundImage = `url(${bgGame.href})`
-        pageName['selectCharPage'].setAttribute('style', 'display:none')
-        selectCharMenu.setAttribute('style', 'display:none')
-        document.querySelector('.game-interface').setAttribute('style', 'display: block')
-        startGame()
-    }
+    loadingGame.setAttribute('style', 'display:flex;')
+    currentShow = undefined
+    canvasTag.style.backgroundImage = `url(${bgGame.href})`
+    pageName['selectCharPage'].setAttribute('style', 'display:none')
+    selectCharMenu.setAttribute('style', 'display:none')
+    document.querySelector('.game-interface').setAttribute('style', 'display: block')
+    startGame()
 })
 
 playAgain.addEventListener('click', () => {

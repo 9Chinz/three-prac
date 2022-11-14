@@ -10,7 +10,7 @@
   </head>
   <body>
     <div id="gameCanvas">
-      <div class="select-char-menu" style="display: none">
+      <div class="select-char-menu animate-fadein" style="display: none">
         <div class="i-icon">
           <img id="i-tutorial" src="/i_icon.1bff49bb.png" alt="">
         </div>
@@ -67,9 +67,14 @@
       </div>
 
       <div class="loading-menu" style="display: none">
-        <div class="fifa-logo">
+        <div class="fifa-logo animate-fadein">
           <img src="/FIFA-LOGO.7d9e9b89.png" alt="fifa-logo">
         </div>
+      </div>
+
+      <div class="loading-game" style="display: none">
+        <div id="loader"></div>
+        <p>Loading</p>
       </div>
 
       <div class="tutorial-page" style="display: none">
@@ -97,11 +102,11 @@
 
       </div>
 
-      <div class="game-interface" style="display: none">
+      <div class="game-interface animate-fadein" style="display: none">
         <div class="swipe-top-play">
           <img src="/swipe-img.9e9594d9.png" alt="">
         </div>
-        <div class="goal-show" style="display: none">
+        <div class="goal-show animate-slidein" style="display: none">
           <img class="goalWord" src="/goalWord.8550ee98.png" alt="">
           <img class="goalBg" src="/bg-score.7a82d72f.png" alt="">
           <p id="score_diplay_round">0</p>
@@ -150,7 +155,7 @@
 
       </div>
 
-      <div class="final-score-ui" style="display: none">
+      <div class="final-score-ui animate-fadein" style="display: none">
         <div class="token-left">
           <img src="/147x147.2ea8029b.png" alt="">
           <p id="token_display">x0</p>
