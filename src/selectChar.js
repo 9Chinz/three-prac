@@ -590,16 +590,9 @@ function playHardKick() {
     playerAnimations['HardKick'].reset()
 }
 
-// function playSoftKick() {
-//     playerThree.visible = true
-//     playerAnimations['SoftKick'].play()
-//     playerAnimations['SoftKick'].reset()
-// }
-
 function randomBlockPosition() {
     const blockPosition = ["TopMiddle", "TopRight", "Right", "TopLeft", "Left"]
     const getBlockPosition = blockPosition[Math.floor(Math.random() * blockPosition.length)]
-    //console.log(`now block ${getBlockPosition}`)
     switch (getBlockPosition) {
         case "TopMiddle":
             goalAnimations['TopMiddle'].play()
@@ -640,9 +633,6 @@ function initDebugTool() {
 }
 
 async function renderGame() {
-    //console.log(`shoot status ${isShoot}| lock status ${lockShoot} | round ${gameRound} | shootTime ${shootTime}`)
-
-    // console.log(`round ${gameRound}`)
     // event key
     if (gameRound >= 5) {
         isShoot = false
