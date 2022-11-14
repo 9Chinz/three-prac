@@ -675,14 +675,23 @@ async function renderGame() {
         lockShoot = true
 
         loadingGame.setAttribute('style', 'display:flex;')
-        const jsonResData = await sendUpdate()
-        if (jsonResData.configuration['credit'] <= 0) {
+        try {
+            const jsonResData = await sendUpdate()
+            if (jsonResData.code != 200) {
+                throw new Error(`code ${jsonResData.code}: ${jsonResData.errors}`)
+            }
+            if (jsonResData.configuration['credit'] <= 0) {
+                document.querySelector('.play-again-btn').setAttribute('style', 'display: none;')
+                tokenLeft.innerHTML = `x${jsonResData.configuration['credit']}`
+            } else {
+                newRef = jsonResData.reference
+                tokenLeft.innerHTML = `x${jsonResData.configuration['credit']}`
+            }
+        } catch (error) {
             document.querySelector('.play-again-btn').setAttribute('style', 'display: none;')
-            tokenLeft.innerHTML = `x${jsonResData.configuration['credit']}`
-        } else {
-            newRef = jsonResData.reference
-            tokenLeft.innerHTML = `x${jsonResData.configuration['credit']}`
+            console.error(`${error}`)
         }
+
         loadingGame.setAttribute('style', 'display:none;')
 
         scoreDisplayBoard.innerHTML = shootSuccess
@@ -838,16 +847,20 @@ playAgain.addEventListener('click', () => {
 })
 
 const sendUpdate = async () => {
-    const res = await fetch(`https://${window.location.host}/sendUpdate`, {
-        method: "POST",
-        body: JSON.stringify({
-            accessToken: accessToken,
-            point: shootSuccess,
-            newReference: newRef
-        }),
-        headers: { "Content-Type": "application/json" },
-    })
-    return res.json()
+    try {
+        const res = await fetch(`https://${window.location.host}/sendUpdate`, {
+            method: "POST",
+            body: JSON.stringify({
+                accessToken: accessToken,
+                point: shootSuccess,
+                newReference: newRef
+            }),
+            headers: { "Content-Type": "application/json" },
+        })
+        return res.json()
+    } catch (error) {
+        return error
+    }
 };
 
 window.onload = () => {

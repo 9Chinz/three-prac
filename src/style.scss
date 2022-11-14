@@ -1,4 +1,4 @@
-$main-menu-bg: url("./img/bg/Main-Menu.png");
+$main-menu-bg: url("./img/bg/Main-Menu.jpg");
 $select-char-bg: url("./img/bg/Select-Char.png");
 $game-bg: url("./img/bg/BG-Gaol.jpg");
 @font-face {
@@ -39,7 +39,7 @@ body {
         }
         p {
           font-family: "Prompt-Bold";
-          font-size: 1.5rem;
+          font-size: 6vw;
           margin: 0.3vh 0 0 2.5vw;
           text-shadow: 2px 4px #5a0713;
           color: #ffffff;
@@ -128,7 +128,7 @@ body {
       .football {
         margin-left: auto;
         margin-right: auto;
-        margin-top: 4.5vh;
+        margin-top: 3.5vh;
         max-width: 60%;
         img {
           width: 100%;
@@ -404,7 +404,7 @@ body {
 
         button {
           font-family: "Prompt-Bold";
-          font-size: 1.2rem;
+          font-size: 5.5vw;
           padding: 1vh 8vw 1vh 8vw;
           background-color: red;
           color: white;
@@ -443,7 +443,7 @@ body {
           position: absolute;
           margin: 8vh 0 0 0;
           font-family: "Prompt-Bold";
-          font-size: 3rem;
+          font-size: 12vw;
           color: #ffffff;
           font-style: italic;
         }
@@ -546,7 +546,7 @@ body {
       .token-left {
         padding-top: 3vh;
         display: flex;
-        margin: 0 0 0 1rem;
+        margin: 0 0 0 5vw;
         width: 8%;
         img {
           width: 100%;
@@ -557,8 +557,8 @@ body {
           margin: 0 0 0;
           position: absolute;
           top: 2.8vh;
-          left: 3.5rem;
-          font-size: 1.5rem;
+          left: 15vw;
+          font-size: 7vw;
           text-shadow: 2px 4px #5a0713;
           color: #ffffff;
         }
@@ -591,7 +591,7 @@ body {
           margin: 0;
           top: 28vh;
           position: absolute;
-          font-size: 5rem;
+          font-size: 20vw;
           color: #ffffff;
         }
       }
