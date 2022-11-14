@@ -208,6 +208,7 @@ body {
         justify-content: end;
         margin-top: 1.5vh;
         img {
+          padding: 1vh 2vw 1vh 2vw;
           width: 8.5%;
         }
       }
@@ -427,7 +428,7 @@ body {
       .score-display-lower {
         position: fixed;
         top: 93.5vh;
-        left: 68vw;
+        left: 65vw;
         font-family: "Prompt-Bold";
         font-size: 8vw;
         text-shadow: 2px 4px #5a0713;
