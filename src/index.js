@@ -649,7 +649,11 @@ function initDebugTool() {
 }
 
 function resetRound() {
-    el.setAttribute('style', 'display:flex')
+    if (gameRound >= 5){
+        el.setAttribute('style', 'display:none;')
+    }else{
+        el.setAttribute('style', 'display:flex')
+    }
     goalBoard.setAttribute('style', 'display:none')
     isShoot = false
     shootGoal = false
@@ -675,6 +679,7 @@ async function renderGame() {
         lockShoot = true
 
         loadingGame.setAttribute('style', 'display:flex;')
+        el.setAttribute('style', 'display:none;')
         try {
             const jsonResData = await sendUpdate()
             if (jsonResData.code != 200) {
@@ -691,7 +696,6 @@ async function renderGame() {
             document.querySelector('.play-again-btn').setAttribute('style', 'display: none;')
             console.error(`${error}`)
         }
-
         loadingGame.setAttribute('style', 'display:none;')
 
         scoreDisplayBoard.innerHTML = shootSuccess
@@ -855,6 +859,7 @@ playAgain.addEventListener('click', async () => {
     totalBall = 5
     isShoot = false
     lockShoot = false
+    el.setAttribute('style', 'display:flex')
     document.querySelector('.final-score-ui').setAttribute('style', 'display: none;')
 })
 

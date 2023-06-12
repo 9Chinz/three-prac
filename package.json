@@ -7,7 +7,7 @@
     "dev": "parcel ./src/index.html",
     "build": "parcel build ./src/index.html"
   },
-  "author": "",
+  "author": "9Chinz",
   "license": "ISC",
   "dependencies": {
     "@splidejs/splide": "^4.1.4",
@@ -19,6 +19,6 @@
     "three": "^0.146.0"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.7.0"
+    "@parcel/transformer-sass": "^2.8.3"
   }
 }
