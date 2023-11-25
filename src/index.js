@@ -680,22 +680,6 @@ async function renderGame() {
 
         loadingGame.setAttribute('style', 'display:flex;')
         el.setAttribute('style', 'display:none;')
-        try {
-            const jsonResData = await sendUpdate()
-            if (jsonResData.code != 200) {
-                throw new Error(`code ${jsonResData.code}: ${jsonResData.errors}`)
-            }
-            if (jsonResData.configuration['credit'] <= 0) {
-                document.querySelector('.play-again-btn').setAttribute('style', 'display: none;')
-                tokenLeft.innerHTML = `x${jsonResData.configuration['credit']}`
-            } else {
-                newRef = jsonResData.reference
-                tokenLeft.innerHTML = `x${jsonResData.configuration['credit']}`
-            }
-        } catch (error) {
-            document.querySelector('.play-again-btn').setAttribute('style', 'display: none;')
-            console.error(`${error}`)
-        }
         loadingGame.setAttribute('style', 'display:none;')
 
         scoreDisplayBoard.innerHTML = shootSuccess
@@ -863,23 +847,6 @@ playAgain.addEventListener('click', async () => {
     document.querySelector('.final-score-ui').setAttribute('style', 'display: none;')
 })
 
-const sendUpdate = async () => {
-    try {
-        const res = await fetch(`https://${window.location.host}/sendUpdate`, {
-            method: "POST",
-            body: JSON.stringify({
-                accessToken: accessToken,
-                point: shootSuccess,
-                newReference: newRef
-            }),
-            headers: { "Content-Type": "application/json" },
-        })
-        return res.json()
-    } catch (error) {
-        return error
-    }
-};
-
 window.onload = () => {
     window.scrollTo(0, 10);
     startMenu.addEventListener('touchend', () => {
@@ -888,19 +855,4 @@ window.onload = () => {
             bgMusicPlayed = true
         }
     })
-    tokenBegin.innerHTML = `x${parseJwt(accessToken).configuration['credit']}`
 }
-function parseJwt(token) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-
-    return JSON.parse(jsonPayload);
-}
-
-goToRewardBtn.addEventListener('click', async () => {
-    await delayPressBtn()
-    window.open("mcard://mgame/rewards", "_self")
-})
